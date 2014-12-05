@@ -1,0 +1,41 @@
+From 549c6c0c1054e64dd6dd373d3c50de2a99add202 Mon Sep 17 00:00:00 2001
+From: Chen Yuwen <chenyuwen@spacestar.com.cn>
+Date: Fri, 5 Dec 2014 15:21:26 +0800
+Subject: [PATCH] xsm fix unknown op 21 98 99 511
+
+---
+ xen/xsm/flask/hooks.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/xen/xsm/flask/hooks.c b/xen/xsm/flask/hooks.c
+index 0cf7daf..80fe78d 100644
+--- a/xen/xsm/flask/hooks.c
++++ b/xen/xsm/flask/hooks.c
+@@ -597,6 +597,8 @@ static int flask_domctl(struct domain *d, int cmd)
+     case XEN_DOMCTL_test_assign_device:
+     case XEN_DOMCTL_assign_device:
+     case XEN_DOMCTL_deassign_device:
++    case XEN_DOMCTL_get_runstate_info:
++    case XEN_DOMCTL_setcorespersocket:
+ #endif
+         return 0;
+ 
+@@ -742,6 +744,7 @@ static int flask_sysctl(int cmd)
+     case XEN_SYSCTL_getdomaininfolist:
+     case XEN_SYSCTL_page_offline_op:
+     case XEN_SYSCTL_scheduler_op:
++    case XEN_SYSCTL_consoleringsize:
+ #ifdef CONFIG_X86
+     case XEN_SYSCTL_cpu_hotplug:
+ #endif
+@@ -1255,6 +1258,7 @@ static int flask_platform_op(uint32_t op)
+     case XENPF_cpu_offline:
+     case XENPF_cpu_hotadd:
+     case XENPF_mem_hotadd:
++    case XENPF_get_cpu_features:
+         return 0;
+ #endif
+ 
+-- 
+1.8.2.1
+
